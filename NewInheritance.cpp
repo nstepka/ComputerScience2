@@ -194,7 +194,7 @@ void Motorcycle::show()
 *       derived class automible
 *
 *****************************************/
-class Automobile : public RoadVehicle
+class Automobile : public virtual RoadVehicle
 {
   private:
     enum type carType;
@@ -204,19 +204,19 @@ class Automobile : public RoadVehicle
     //constructos
     Automobile() : RoadVehicle()
     {      
-        cout << "in autobible constructor default\n";                          
+        cout << "in automobible constructor default\n";                          
         setType(who_knows); 
         setNumDoors(0);
     }       
     Automobile(type t, int nod)  : RoadVehicle()
     { 
-        cout << "in autobible constructor #1\n";                          
+        cout << "in automobible constructor #1\n";                          
         setType(t);
         setNumDoors(nod);
     }     
     Automobile(type t, int nod, int w, int p) : RoadVehicle(w,p)
     { 
-        cout << "in autobible constructor #1\n";                          
+        cout << "in automobible constructor #1\n";                          
         setType(t);
         setNumDoors(nod);
     }        
@@ -266,7 +266,7 @@ void Automobile::show()
 *       derived class GasCar
 *
 ******************************************/
-class GasCar : virtual public Automobile
+class GasCar :  public virtual Automobile
 {
   private:
     int mpg;
@@ -338,7 +338,7 @@ void GasCar::show()
 *       derived class ElectricCar
 
 ******************************************/
-class ElectricCar : virtual public Automobile
+class ElectricCar : public virtual Automobile
 {
   private:
     int timeBatteryCharge;
@@ -351,6 +351,12 @@ class ElectricCar : virtual public Automobile
         setTimeBatteryCharge(0);
         setMilesBatteryCharge(0);    
     }  
+    ElectricCar(int bct, int bcm) : Automobile()
+    {
+        cout << "in ElectricCar constructor default\n";  
+        setTimeBatteryCharge(bct);
+        setMilesBatteryCharge(bcm);    
+    } 
     ElectricCar(int bct, int bcm, type at, int nod, int w, int p) : Automobile(at,nod,w,p)
     {
         cout << "in ElectricCar constructor #1\n";  
@@ -404,35 +410,37 @@ void ElectricCar::show()
 *
 ******************************************/
 
-class HybridCar : public virtual ElectricCar, public  virtual GasCar
+class HybridCar : virtual public GasCar, virtual public ElectricCar
 {
   private:
  
+ 
   public:
     // constructors
-    HybridCar() : ElectricCar(), GasCar()
+    HybridCar() : GasCar(), ElectricCar()
     {
         cout << "in HybridCar constructor default\n";  
-    }  															//ElectricCar(int bct, int bcm, type at, int nod, int w, int p) : Automobile(at,nod,w,p)
-    															//GasCar(int v, int m, type at, int nod, int w, int p)
-    HybridCar(int bct, int bcm, int v, int m, type at, int nod, int w, int p) : ElectricCar(bct,bcm,at,nod,w,p), GasCar(v,m)
+
+    }  
+    HybridCar(int bct, int bcm, int v, int m, type at, int nod, int w, int p) : ElectricCar(bct,bcm), GasCar(v,m), Automobile(at,nod), RoadVehicle(w,p)
     {
-        cout << "in HybridCar constructor #1\n";
-    }
+        cout << "in HybridCar constructor #1\n"; 
+
+    }  
     // destructor
     ~HybridCar()
     {
         cout << "in HybridCar destructor\n";                       
     }                                         
     // member functions
+    
     // setters
-  
+    
       
     // getters
-
+    
      
     void show();
-	
 }
 ;
 /*****************************************
@@ -484,11 +492,11 @@ int main()
 //    testAutomobile();
 //    system("pause");
 //     
-    testElectricCar();
-    system("pause");
+//    testElectricCar();
+//    system("pause");
 //     
-    testGasCar();
-    system("pause");
+//    testGasCar();
+//    system("pause");
      
     testHybridCar();
   
@@ -555,6 +563,8 @@ void testElectricCar()
 void testGasCar()
 {
     cout << "\n";
+    GasCar g1;
+    g1.show();
     GasCar gc(20, 45, car, 2, 4, 5);
     gc.setWheels(4);
     gc.setPass(4);
@@ -602,7 +612,6 @@ void testMotorcycle()
      mc4.show();
      cout << "\n";       
 }
-
 
 
 
